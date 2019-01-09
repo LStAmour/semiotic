@@ -4,7 +4,7 @@ const autoprefixer = require("autoprefixer")
 const path = require("path")
 const webpack = require("webpack")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
-const ExtractTextPlugin = require("extract-text-webpack-plugin")
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const ManifestPlugin = require("webpack-manifest-plugin")
 const InterpolateHtmlPlugin = require("react-dev-utils/InterpolateHtmlPlugin")
 const SWPrecacheWebpackPlugin = require("sw-precache-webpack-plugin")
@@ -52,6 +52,9 @@ const extractTextPluginOptions = shouldUseRelativeAssetPaths
 module.exports = {
   // Don't attempt to continue if there are any errors.
   bail: true,
+  optimization: {
+    minimize: true
+  },
   // We generate sourcemaps in production. This is slow but gives good results.
   // You can exclude the *.map files from the build during deployment.
   devtool: shouldUseSourceMap ? "source-map" : false,
@@ -111,6 +114,11 @@ module.exports = {
       // First, run the linter.
       // It's important to do this before Babel processes the JS.
       {
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: "javascript/auto"
+      },
+      {
         test: /\.(js|jsx|mjs)$/,
         enforce: "pre",
         use: [
@@ -162,50 +170,38 @@ module.exports = {
           // in the main CSS file.
           {
             test: /\.css$/,
-            loader: ExtractTextPlugin.extract(
-              Object.assign(
-                {
-                  fallback: {
-                    loader: require.resolve("style-loader"),
-                    options: {
-                      hmr: false
-                    }
-                  },
-                  use: [
-                    {
-                      loader: require.resolve("css-loader"),
-                      options: {
-                        importLoaders: 1,
-                        minimize: true,
-                        sourceMap: shouldUseSourceMap
-                      }
-                    },
-                    {
-                      loader: require.resolve("postcss-loader"),
-                      options: {
-                        // Necessary for external CSS imports to work
-                        // https://github.com/facebookincubator/create-react-app/issues/2677
-                        ident: "postcss",
-                        plugins: () => [
-                          require("postcss-flexbugs-fixes"),
-                          autoprefixer({
-                            browsers: [
-                              ">1%",
-                              "last 4 versions",
-                              "Firefox ESR",
-                              "not ie < 9" // React doesn't support IE8 anyway
-                            ],
-                            flexbox: "no-2009"
-                          })
-                        ]
-                      }
-                    }
+            loader: [
+              {
+                loader: MiniCssExtractPlugin.loader
+              },
+              {
+                loader: require.resolve("css-loader"),
+                options: {
+                  importLoaders: 1,
+                  sourceMap: shouldUseSourceMap
+                }
+              },
+              {
+                loader: require.resolve("postcss-loader"),
+                options: {
+                  // Necessary for external CSS imports to work
+                  // https://github.com/facebookincubator/create-react-app/issues/2677
+                  ident: "postcss",
+                  plugins: () => [
+                    require("postcss-flexbugs-fixes"),
+                    autoprefixer({
+                      browsers: [
+                        ">1%",
+                        "last 4 versions",
+                        "Firefox ESR",
+                        "not ie < 9" // React doesn't support IE8 anyway
+                      ],
+                      flexbox: "no-2009"
+                    })
                   ]
-                },
-                extractTextPluginOptions
-              )
-            )
-            // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
+                }
+              }
+            ]
           },
           // "file" loader makes sure assets end up in the `build` folder.
           // When you `import` an asset, you get its filename.
@@ -234,7 +230,7 @@ module.exports = {
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     // In production, it will be an empty string unless you specify "homepage"
     // in `package.json`, in which case it will be the pathname of that URL.
-    new InterpolateHtmlPlugin(env.raw),
+    new InterpolateHtmlPlugin(HtmlWebpackPlugin, env.raw),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,
@@ -257,29 +253,7 @@ module.exports = {
     // It is absolutely essential that NODE_ENV was set to production here.
     // Otherwise React will be compiled in the very slow development mode.
     new webpack.DefinePlugin(env.stringified),
-    // Minify the code.
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-        // Disabled because of an issue with Uglify breaking seemingly valid code:
-        // https://github.com/facebookincubator/create-react-app/issues/2376
-        // Pending further investigation:
-        // https://github.com/mishoo/UglifyJS2/issues/2011
-        comparisons: false
-      },
-      mangle: {
-        safari10: true
-      },
-      output: {
-        comments: false,
-        // Turned on because emoji and regex is not minified properly using default
-        // https://github.com/facebookincubator/create-react-app/issues/2488
-        ascii_only: true
-      },
-      sourceMap: shouldUseSourceMap
-    }),
-    // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
-    new ExtractTextPlugin({
+    new MiniCssExtractPlugin({
       filename: cssFilename
     }),
     // Generate a manifest file which contains a mapping of all asset filenames

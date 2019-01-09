@@ -82,17 +82,17 @@ export function createPoints({
     const renderedCustomMark = !customMark
       ? undefined
       : React.isValidElement(customMark)
-        ? customMark
-        : customMark({ d: d.data, xy: d, i, xScale, yScale })
+      ? customMark
+      : customMark({ d: d.data, xy: d, i, xScale, yScale })
     const markProps = customMark
       ? Object.assign(baseMarkProps, renderedCustomMark.props, {
           "aria-label": pointAriaLabel
         })
       : {
           ...baseMarkProps,
-          "key": `piece-${i}`,
-          "markType": "circle",
-          "r": 2,
+          key: `piece-${i}`,
+          markType: "circle",
+          r: 2,
           "aria-label": pointAriaLabel
         }
 
@@ -257,8 +257,8 @@ export function createLines({
       const markProps = {
         ...builtInDisplayProps,
         ...baseMarkProps,
-        "markType": "path",
-        "d": pathString,
+        markType: "path",
+        d: pathString,
         "aria-label":
           d.data &&
           d.data.length > 0 &&

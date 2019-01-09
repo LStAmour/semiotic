@@ -1,6 +1,6 @@
 // @flow
 import React from "react"
-import json2csv from "json2csv"
+import "json2csv/dist/json2csv.umd"
 
 export const downloadCSV = (csvName: string, data: *) => {
   json2csv(Object.assign({}, { data: data }), (err, csv) => {

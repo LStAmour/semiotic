@@ -1,33 +1,31 @@
 import node from "rollup-plugin-node-resolve"
 import babel from "rollup-plugin-babel"
 import commonjs from "rollup-plugin-commonjs"
-import builtins from "rollup-plugin-node-builtins"
 import replace from "rollup-plugin-replace"
 import regenerator from "rollup-plugin-regenerator"
 
 import flow from "rollup-plugin-flow"
 
 export default {
-  exports: "named",
   input: "src/components/index.js",
   output: {
     format: "umd",
     file: "dist/semiotic.js",
-    name: "Semiotic"
-  },
-  interop: false,
-  globals: {
-    react: "React",
-    "react-dom": "ReactDOM"
+    name: "Semiotic",
+    globals: {
+      react: "React",
+      "react-dom": "ReactDOM"
+    },
+    exports: "named"
   },
   external: ["react", "react-dom"],
   plugins: [
     flow(),
-    node({ jsnext: true, preferBuiltins: false }),
+    node({ jsnext: true, browser: true, preferBuiltins: false }),
     regenerator({ includeRuntime: true, sourceMap: false }),
-    builtins(),
     commonjs({
       include: "node_modules/**",
+      exclude: /json2csv/,
       namedExports: {
         "node_modules/d3-sankey-circular/dist/index.js": [
           "sankeyCircular",
@@ -44,8 +42,25 @@ export default {
     babel({
       babelrc: false,
       runtimeHelpers: true,
-      presets: ["flow", ["es2015", { modules: false }], "react", "stage-0"],
-      plugins: ["external-helpers"]
+      presets: [
+        "@babel/preset-flow",
+        "@babel/preset-react",
+        "@babel/preset-env"
+      ],
+      plugins: [
+        [
+          "@babel/plugin-proposal-decorators",
+          {
+            legacy: true
+          }
+        ],
+        [
+          "@babel/plugin-proposal-class-properties",
+          {
+            loose: true
+          }
+        ]
+      ]
     })
   ]
 }

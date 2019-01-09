@@ -27,18 +27,18 @@ import { extentValue } from "./unflowedFunctions"
 import type { ProjectedPoint, accessorType } from "../types/generalTypes"
 
 const builtInTransformations = {
-  "stackedarea": stackedArea,
+  stackedarea: stackedArea,
   "stackedarea-invert": stackedArea,
-  "stackedpercent": stackedArea,
+  stackedpercent: stackedArea,
   "stackedpercent-invert": stackedArea,
-  "linepercent": stackedArea,
-  "difference": differenceLine,
-  "bumparea": bumpChart,
-  "bumpline": bumpChart,
+  linepercent: stackedArea,
+  difference: differenceLine,
+  bumparea: bumpChart,
+  bumpline: bumpChart,
   "bumparea-invert": bumpChart,
-  "line": lineChart,
-  "area": lineChart,
-  "cumulative": cumulativeLine,
+  line: lineChart,
+  area: lineChart,
+  cumulative: cumulativeLine,
   "cumulative-reverse": cumulativeLine
 }
 

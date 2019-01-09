@@ -1,7 +1,7 @@
 import React from "react"
 import { OrdinalFrame } from "../../components"
 import { sum } from "d3-array"
-import { scaleSqrt } from "d3-shape"
+import { scaleSqrt } from "d3-scale"
 
 import DocumentComponent from "../layout/DocumentComponent"
 
@@ -93,10 +93,10 @@ const windRoseData = [
 ]
 
 const colorHash = {
-  "Jason": "#00a2ce",
-  "Susie": "#4d430c",
-  "Matt": "#b3331d",
-  "Betty": "#b6a756",
+  Jason: "#00a2ce",
+  Susie: "#4d430c",
+  Matt: "#b3331d",
+  Betty: "#b6a756",
   "Zymotic diseases": "#00a2ce",
   "Wounds & injuries": "#b3331d",
   "All other causes": "#4d430c"

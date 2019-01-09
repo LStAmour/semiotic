@@ -216,22 +216,22 @@ type State = {
 }
 
 const naturalLanguageLineType = {
-  "line": { items: "line", chart: "line chart" },
-  "area": { items: "area", chart: "area chart" },
-  "cumulative": { items: "line", chart: "cumulative chart" },
+  line: { items: "line", chart: "line chart" },
+  area: { items: "area", chart: "area chart" },
+  cumulative: { items: "line", chart: "cumulative chart" },
   "cumulative-reverse": { items: "line", chart: "cumulative chart" },
-  "linepercent": { items: "line", chart: "line chart" },
-  "stackedarea": { items: "stacked area", chart: "stacked area chart" },
+  linepercent: { items: "line", chart: "line chart" },
+  stackedarea: { items: "stacked area", chart: "stacked area chart" },
   "stackedarea-invert": { items: "stacked area", chart: "stacked area chart" },
-  "stackedpercent": { items: "stacked area", chart: "stacked area chart" },
+  stackedpercent: { items: "stacked area", chart: "stacked area chart" },
   "stackedpercent-invert": {
     items: "stacked area",
     chart: "stacked area chart"
   },
-  "bumparea": { items: "ranked area", chart: "ranked area chart" },
+  bumparea: { items: "ranked area", chart: "ranked area chart" },
   "bumparea-invert": { items: "ranked area", chart: "ranked area chart" },
-  "bumpline": { items: "ranked line", chart: "ranked line chart" },
-  "difference": {
+  bumpline: { items: "ranked line", chart: "ranked line chart" },
+  difference: {
     items: "line",
     chart: "difference chart"
   }

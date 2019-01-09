@@ -243,7 +243,7 @@ function determineEdgeIcon({ baseCustomEdgeIcon, networkSettings, size, graph, n
 
 function breadthFirstCompontents(baseNodes, hash) {
   const componentHash = {
-    "0": { componentNodes: [], componentEdges: [] }
+    0: { componentNodes: [], componentEdges: [] }
   }
   const components = [componentHash["0"]]
 
